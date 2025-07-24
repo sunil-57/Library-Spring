@@ -1,12 +1,19 @@
 package com.summer.models;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "book")
 public class Book{
     //attributes ->book number, nam, quantity, author
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int bookId;
+
     private int bookNumber;
     private String bookName;
     private int bookQuantity;
-    private String bookAuthor;
+    private String authorName;
 
     public Book(){}
 
@@ -15,7 +22,7 @@ public class Book{
         this.bookNumber = bookNumber;
         this.bookName = bookName;
         this.bookQuantity = bookQuantity;
-        this.bookAuthor = bookAuthor;
+        this.authorName = authorName;
     }
 
     public int getBookId() {
@@ -50,12 +57,12 @@ public class Book{
         this.bookQuantity = bookQuantity;
     }
 
-    public String getBookAuthor() {
-        return bookAuthor;
+    public String getAuthorName() {
+        return authorName;
     }
 
-    public void setBookAuthor(String bookAuthor) {
-        this.bookAuthor = bookAuthor;
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 
     //behaviour -> increase quantity, decrease quantity
@@ -72,7 +79,7 @@ public class Book{
                 "bookNumber=" + bookNumber +
                 ", bookName='" + bookName + '\'' +
                 ", bookQuantity=" + bookQuantity +
-                ", bookAuthor='" + bookAuthor + '\'' +
+                ", authorName='" + authorName + '\'' +
                 '}';
     }
 }

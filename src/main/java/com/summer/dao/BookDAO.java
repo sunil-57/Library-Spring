@@ -23,7 +23,7 @@ public class BookDAO {
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setInt(1, book.getBookNumber());
             ps.setString(2, book.getBookName());
-            ps.setString(3, book.getBookAuthor());
+            ps.setString(3, book.getAuthorName());
             ps.setInt(4, book.getBookQuantity());
             if (ps.executeUpdate() > 0) {
                 System.out.println("book added to database");
