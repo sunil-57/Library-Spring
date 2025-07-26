@@ -4,6 +4,8 @@ import com.summer.dao.BookDAO;
 import com.summer.models.Book;
 import com.summer.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -11,8 +13,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/books")
+@Controller
+@RequestMapping("/books")
 public class BookController{
 
     @Autowired
@@ -20,24 +22,43 @@ public class BookController{
 
     //using service layers
     @PostMapping
-    public Book saveBook(@RequestBody Book book) {
-        return bookService.saveBook(book);
+    public String saveBook(@ModelAttribute Book book) {
+        bookService.saveBook(book);
+        return "redirect:/books";
     }
 
     @GetMapping
-    public List<Book> getAllBooks() {
-        return bookService.getAllBooks();
+    public String getAllBooks(Model model) {
+        model.addAttribute("books", bookService.getAllBooks());
+        return "view-books";
     }
 
-    @GetMapping("/{id}")
-    public Book getBookById(@PathVariable int id) {
-        return bookService.getBookById(id);
+    @GetMapping("/item/{id}")
+    public String getBookById(@PathVariable Integer id , Model model) {
+        Book editBook = bookService.getBookById(id);
+        if (editBook != null) {
+            model.addAttribute("editBook", editBook);
+        }
+        return "edit-book";
     }
 
-    @DeleteMapping("/{id}")
-    public String deleteABook(@PathVariable int id) {
+    @PutMapping("/edit/{id}")
+    public String updateBook(@PathVariable Integer id, @ModelAttribute Book updatedBook) {
+        Book existingBook = bookService.getBookById(id);
+        if (existingBook != null) {
+            existingBook.setBookName(updatedBook.getBookName());
+            existingBook.setAuthorName(updatedBook.getAuthorName());
+            existingBook.setBookNumber(updatedBook.getBookNumber());
+            existingBook.setBookQuantity(updatedBook.getBookQuantity());
+            bookService.saveBook(existingBook);
+        }
+        return "redirect:/books";
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String deleteABook(@PathVariable Integer id) {
         bookService.deleteBook(id);
-        return "Book deleted";
+        return "redirect:/books";
     }
 
 //    private final BookDAO bookdao;

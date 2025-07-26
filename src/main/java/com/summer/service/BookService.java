@@ -3,6 +3,7 @@ package com.summer.service;
 import com.summer.models.Book;
 import com.summer.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
